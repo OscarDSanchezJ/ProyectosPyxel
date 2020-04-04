@@ -18,16 +18,16 @@ class App:
     def update(self):
         #MOVIMIENTOS DEL JUGADOR
         if pyxel.btn(pyxel.KEY_RIGHT):
-            self.jugador_x = (self.jugador_x + 8) % pyxel.width
+            self.jugador_x = (self.jugador_x + 1) % pyxel.width
 
         elif pyxel.btn(pyxel.KEY_LEFT):
-            self.jugador_x = (self.jugador_x - 8) % pyxel.width
+            self.jugador_x = (self.jugador_x - 1) % pyxel.width
 
         elif pyxel.btn(pyxel.KEY_UP):
-            self.jugador_y = (self.jugador_y - 8) % pyxel.height
+            self.jugador_y = (self.jugador_y - 1) % pyxel.height
 
         elif pyxel.btn(pyxel.KEY_DOWN):
-            self.jugador_y = (self.jugador_y + 8) % pyxel.height
+            self.jugador_y = (self.jugador_y + 1) % pyxel.height
         #COLISION CON LA PARED
 
 
@@ -39,8 +39,20 @@ class App:
         pyxel.rect(self.bloque_x, self.bloque_y, self.bloque_w, self.bloque_h, 3)
         #Simplificando esto creo?
 
-        #2 COLISIOENES
+        #3 COLISIOENES
 
+        topEdge1 = self.jugador_y + self.jugador_h
+        rightEdge1 = self.jugador_x + self.jugador_w
+        leftEdge1 = self.jugador_x
+        bottomEdge1 = self.jugador_y
+        topEdge2 = self.bloque_y + self.bloque_h
+        rightEdge2 = self.bloque_x + self.bloque_w
+        leftEdge2 = self.bloque_x
+        bottomEdge2 = self.bloque_y
+        collides = (leftEdge1 < rightEdge2 and rightEdge1 > leftEdge2 and bottomEdge1 < topEdge2 and topEdge1 > bottomEdge2)
+
+        if(collides):
+            pyxel.text(10, 10, "PATRIA", 15)
 
 
 
@@ -51,17 +63,17 @@ class App:
         #self.jugador_h + self.jugador_y >= self.bloque_y)
 
         #2 COLISIOENES
-        collides = (self.jugador_x >= self.bloque_x
-        and self.jugador_x <= self.bloque_x + self.bloque_w
-        and self.jugador_y >= self.bloque_y
-        and self.jugador_y <= self.bloque_y + self.bloque_h) or (self.jugador_x + self.jugador_w  >= self.bloque_x
-        and self.jugador_x + self.jugador_w <= self.bloque_x + self.bloque_w
-        and self.jugador_y + self.jugador_h >= self.bloque_y
-        and self.jugador_y + self.jugador_h <= self.bloque_y + self.bloque_h)
+        #collides = (self.jugador_x >= self.bloque_x
+        #and self.jugador_x <= self.bloque_x + self.bloque_w
+        #and self.jugador_y >= self.bloque_y
+        #and self.jugador_y <= self.bloque_y + self.bloque_h) or (self.jugador_x + self.jugador_w  >= self.bloque_x
+        #and self.jugador_x + self.jugador_w <= self.bloque_x + self.bloque_w
+        #and self.jugador_y + self.jugador_h >= self.bloque_y
+        #and self.jugador_y + self.jugador_h <= self.bloque_y + self.bloque_h)
 
 
-        if(collides):
-            pyxel.text(10, 10, "CONIAZO",15)
+        #if(collides):
+            #pyxel.text(10, 10, "CONIAZO",15)
 
 
 
