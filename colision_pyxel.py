@@ -17,29 +17,6 @@ class App:
 
     def update(self):
         #MOVIMIENTOS DEL JUGADOR
-        if pyxel.btn(pyxel.KEY_RIGHT):
-            self.jugador_x = (self.jugador_x + 1) % pyxel.width
-
-        elif pyxel.btn(pyxel.KEY_LEFT):
-            self.jugador_x = (self.jugador_x - 1) % pyxel.width
-
-        elif pyxel.btn(pyxel.KEY_UP):
-            self.jugador_y = (self.jugador_y - 1) % pyxel.height
-
-        elif pyxel.btn(pyxel.KEY_DOWN):
-            self.jugador_y = (self.jugador_y + 1) % pyxel.height
-        #COLISION CON LA PARED
-
-
-
-    def draw(self):
-        #DIBUJADO
-        pyxel.cls(0)
-        pyxel.rect(self.jugador_x, self.jugador_y, self.jugador_h, self.jugador_w, 9)
-        pyxel.rect(self.bloque_x, self.bloque_y, self.bloque_w, self.bloque_h, 3)
-        #Simplificando esto creo?
-
-        #3 COLISIOENES
 
         topEdge1 = self.jugador_y + self.jugador_h
         rightEdge1 = self.jugador_x + self.jugador_w
@@ -50,10 +27,40 @@ class App:
         leftEdge2 = self.bloque_x
         bottomEdge2 = self.bloque_y
         collides = (leftEdge1 < rightEdge2 and rightEdge1 > leftEdge2 and bottomEdge1 < topEdge2 and topEdge1 > bottomEdge2)
+        #(rightEdge2 < leftEdge1 and leftEdge2 > rightEdge1 and topEdge2 < bottomEdge and bottomEdge2 > topEdge1)
 
-        if(collides):
-            pyxel.text(10, 10, "PATRIA", 15)
+        #Movimiento y colision con el otro bloque
 
+        if pyxel.btn(pyxel.KEY_RIGHT):
+            self.jugador_x = (self.jugador_x + 1) % pyxel.width
+        elif(collides):
+                self.jugador_x = (self.bloque_x - self.jugador_w)
+
+        elif pyxel.btn(pyxel.KEY_LEFT):
+            self.jugador_x = (self.jugador_x - 1) % pyxel.width
+            if(collides):
+                self.jugador_x = (self.bloque_x + self.bloque_w)
+
+        elif pyxel.btn(pyxel.KEY_UP):
+            self.jugador_y = (self.jugador_y - 1) % pyxel.height
+            if(collides):
+                self.jugador_y = (self.bloque_y + self.bloque_h)
+
+
+        elif pyxel.btn(pyxel.KEY_DOWN):
+            self.jugador_y = (self.jugador_y + 1) % pyxel.height
+            if(collides):
+                self.jugador_y = (self.bloque_y - self.jugador_h)
+
+
+    def draw(self):
+        #DIBUJADO
+        pyxel.cls(0)
+        pyxel.rect(self.jugador_x, self.jugador_y, self.jugador_h, self.jugador_w, 9)
+        pyxel.rect(self.bloque_x, self.bloque_y, self.bloque_w, self.bloque_h, 3)
+        #Simplificando esto creo?
+
+        #3 COLISIOENES incompletas
 
 
         #1 COLISION CON LA PARED
