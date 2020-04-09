@@ -33,7 +33,7 @@ class App:
 
         if pyxel.btn(pyxel.KEY_RIGHT):
             self.jugador_x = (self.jugador_x + 1) % pyxel.width
-        elif(collides):
+            if(collides):
                 self.jugador_x = (self.bloque_x - self.jugador_w)
 
         elif pyxel.btn(pyxel.KEY_LEFT):
