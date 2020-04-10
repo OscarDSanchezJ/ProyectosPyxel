@@ -36,7 +36,7 @@ class App:
         self.jugador_futuro_y = self.jugador_y
         
         #ENTRADA DE CONTROLES:
-         if pyxel.btn(pyxel.KEY_RIGHT):
+        if pyxel.btn(pyxel.KEY_RIGHT):
             self.jugador_futuro_x = (self.jugador_x + self.jugador_velocidad)
         elif pyxel.btn(pyxel.KEY_LEFT):
             self.jugador_futuro_x = (self.jugador_x - self.jugador_velocidad)
