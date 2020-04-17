@@ -8,7 +8,7 @@ class Jugador(object):
         self._h = h
         self._w = w
         self.collide = True
-        self.velocidad = 8
+        self.velocidad = 1
 
     @property
     def x(self):
@@ -125,9 +125,11 @@ class Caja(object):
 class Pyxoban(object):
     def __init__(self):
         pyxel.init(120,240,caption = "Pyxoban")
-        self.jugador = Jugador(30,30,16,16)
-        self.Caja = []
-        self.Pared = []
+        self.jugador = Jugador(0,0,16,16)
+        self.caja = Caja(32,32,16,16)
+        self.pared = Pared(64,64,16,16)
+        self.jf_x = self.jugador.x
+        self.jf_y = self.jugador.y
 
         #MUSIC
         pyxel.sound(0).set("e3e3c3f1 g1g1c2e2 d2d2d2g2 g2g2rr" "c2c2a1e1 e1e1a1c2 b1b1b1e2 e2e2rr","p","6","vffn fnff vffs vfnn",25,)
@@ -145,25 +147,50 @@ class Pyxoban(object):
 #Dibujado de los objetos
 #--------------------------------------------------------------------
     def draw_jugador(self, Jugador):
-        pyxel.rect(self.jugador.x,self.jugador.y,self.jugador.h,self.jugador.w,10)
+        pyxel.rect(self.jugador.x,self.jugador.y, 16, 16, 10)
+
+    def draw_pared(self, Pared):
+        pyxel.rect(self.pared.x, self.pared.y, 16, 16, 15)
 
 #--------------------------------------------------------------------
 #Actualizacion del juego Principal
     def update(self):
         if pyxel.btn(pyxel.KEY_RIGHT):
-            self.jugador.x = (self.jugador.x + self.jugador.velocidad)
+            self.jf_x = (self.jugador.x + self.jugador.velocidad)
         elif pyxel.btn(pyxel.KEY_LEFT):
-            self.jugador.x = (self.jugador.x - self.jugador.velocidad)
+            self.jf_x = (self.jugador.x - self.jugador.velocidad)
         elif pyxel.btn(pyxel.KEY_UP):
-            self.jugador.y = (self.jugador.y - self.jugador.velocidad)
+            self.jf_x = (self.jugador.y - self.jugador.velocidad)
         elif pyxel.btn(pyxel.KEY_DOWN):
-            self.jugador.y = (self.jugador.y + self.jugador.velocidad)
+            self.jf_x = (self.jugador.y + self.jugador.velocidad)
 
+        #ACTUALIZACIÓN DE 'FANTASMAS'
+        topEdge1 = self.jf_y + self.jugador.h
+        rightEdge1 = self.jf_x + self.jugador.w
+        leftEdge1 = self.jf_x
+        bottomEdge1 = self.jf_y
+
+
+        topEdge2 = self.pared.x + self.pared.h
+        rightEdge2 = self.pared.x + self.pared.w
+        leftEdge2 = self.pared.x
+        bottomEdge2 = self.pared.y
+
+
+        #PROCESO DE COLISIÓN
+
+        collides = (leftEdge1 < rightEdge2 and rightEdge1 > leftEdge2 and bottomEdge1 < topEdge2 and topEdge1 > bottomEdge2)
+
+            #respuesta de todas las colisiones
+        if not collides: #Si no se colisiona, entonces actualizar la 'versión real' del móvil
+            self.jugador.x = self.jf_x
+            self.jugador.y = self.jf_y
 
 #Dibujado del juego Principal
     def draw(self):
         pyxel.cls(0)
         self.draw_jugador(self.jugador)
+        self.draw_pared(self.pared)
 
 
 Pyxoban()
